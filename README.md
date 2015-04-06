@@ -19,7 +19,7 @@ Some info about osx-docker-mysql:
 - It fixes OS X related [write permission errors for MySQL](https://github.com/boot2docker/boot2docker/issues/581)
 - It lets you mount OS X folders *with write support* as volumes for
   - The database
-- It creates a default database and user with permissions to that database
+- If `CREATE_MYSQL_BASIC_USER_AND_DB="true"`, it creates a default database and user with permissions to that database
 - It is documented for less advanced users (like me)
 
 
@@ -71,7 +71,8 @@ MySQL runs as user `mysql` and group `staff`.
 
 ####The three MySQL users
 
-The bundled MySQL server has three  users, that are `root`, `admin`, and `user`. 
+The bundled MySQL server has two users, that are `root` and `admin`, and an optional
+third user `user`.
 
 The `root` account comes with an empty password, and it is for local connections
 (e.g., using some code). The `root` user cannot remotely access the database 
@@ -97,20 +98,30 @@ You will see an output like the following:
 
 In this case, `47nnf4FweaKu` is the password allocated to the `admin` user.
 
-Finally, a user called `user` with password `password` is created for your convenience.
+Finally, an optional a user called `user` with password `password` can be created for your convenience either when:
+ - The environment variable `CREATE_MYSQL_BASIC_USER_AND_DB` is true; or
+ - Any of the `MYSQL_USER_*` variable (explained below) is true
+The user is called `user` and has as password `password`.
+
 The `user` user has full privileges on a database called `db`, which is also created
-for your convenience.
+for your convenience. As with the `admin` user, the user `user` can access
+the MySQL server from any host (`%`).
+The user name, password, and database name can be changed using
+the the `MYSQL_USER_*` variables, explained below.
 
 ##Environment variables
 
 - MYSQL_ADMIN_PASS="mypass" will use your given MySQL password for the `admin`
 user instead of the random one.
+- CREATE_MYSQL_BASIC_USER_AND_DB="true" will create the user `user` with db `db` and password `password`. Not needed if using one of the following three MYSQL_USER_* variables
 - MYSQL_USER_NAME="daniel" will use your given MySQL username instead of `user`
 - MYSQL_USER_DB="supercooldb" will use your given database name instead of `db`
 - MYSQL_USER_PASS="supersecretpassword" will use your given password  instead of `password`
+- PHP_UPLOAD_MAX_FILESIZE="10M" will change PHP upload_max_filesize config value
+- PHP_POST_MAX_SIZE="10M" will change PHP post_max_size config value
 
 Set these variables using the `-e` flag when invoking the `docker` client.
 
-	docker run -i -t -p "3306:3306" -v ${PWD}/mysql:/mysql -e MYSQL_ADMIN_PASS="mypass" --name db dgraziotin/mysql
+	docker run -i -t -p "3306:3306" -e MYSQL_ADMIN_PASS="mypass" --name yourwebapp dgraziotin/mysql
 
 Please note that the MySQL variables will not work if an existing MySQL volume is supplied.
