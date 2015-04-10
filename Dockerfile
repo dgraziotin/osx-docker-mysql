@@ -5,9 +5,18 @@ MAINTAINER Daniel Graziotin <daniel@ineed.coffee>
 # tutumcloud/tutum-docker-lamp
 # MAINTAINER Fernando Mayo <fernando@tutum.co>, Feng Honglin <hfeng@tutum.co>
 
+ENV DOCKER_USER_ID 501 
+ENV DOCKER_USER_GID 20
+
+ENV BOOT2DOCKER_ID 1000
+ENV BOOT2DOCKER_GID 50
+
 # Tweaks to give MySQL write permissions to the app
-RUN useradd -r mysql -u 1000 && \
+RUN useradd -r mysql -u ${BOOT2DOCKER_ID} && \
     usermod -G staff mysql
+
+RUN groupmod -g $(($BOOT2DOCKER_GID + 10000)) $(getent group $BOOT2DOCKER_GID | cut -d: -f1)
+RUN groupmod -g ${BOOT2DOCKER_GID} staff
 
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive

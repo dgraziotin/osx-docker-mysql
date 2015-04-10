@@ -8,6 +8,22 @@ chown -R mysql:staff /var/run/mysqld
 chmod -R 770 /var/lib/mysql
 chmod -R 770 /var/run/mysqld
 
+if [ -n "$VAGRANT_OSX_MODE" ];then
+    usermod -u $DOCKER_USER_ID mysql
+    groupmod -g $(($DOCKER_USER_GID + 10000)) $(getent group $DOCKER_USER_GID | cut -d: -f1)
+    groupmod -g ${DOCKER_USER_GID} staff
+    chmod -R 770 /var/lib/mysql
+    chmod -R 770 /var/run/mysqld
+    chown -R mysql:staff /var/lib/mysql
+    chown -R mysql:staff /var/run/mysqld
+else
+    # Tweaks to give Apache/PHP write permissions to the app
+    chmod -R 770 /var/lib/mysql
+    chmod -R 770 /var/run/mysqld
+    chown -R mysql:staff /var/lib/mysql
+    chown -R mysql:staff /var/run/mysqld
+fi
+
 sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 sed -i "s/user.*/user = mysql/" /etc/mysql/my.cnf
 

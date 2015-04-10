@@ -1,50 +1,59 @@
 #osx-docker-mysql, a.k.a dgraziotin/mysql
 
+    Out-of-the-box MySQL Docker image that *just works* on Mac OS X.
+    Including write support for mounted volumes (MySQL).
+    No matter if using the official boot2docker or having Vagrant in the stack, as well.
+
 osx-docker-mysql, which is known as 
 [dgraziotin/mysql](https://registry.hub.docker.com/u/dgraziotin/mysql/) 
 in the Docker Hub, is a reduced fork of 
 [dgraziotin/osx-docker-lamp](https://github.com/dgraziotin/osx-docker-lamp), 
 which is an "Out-of-the-box LAMP image (PHP+MySQL) for Docker". 
 
-osx-docker-mysql is instead an:
-
-	Out-of-the-box MySQL Docker image that *just works* on Mac OS X.
-
-However, it has also been tested for Docker running under GNU/Linux (Ubuntu 14.10).
-
 Some info about osx-docker-mysql:
 
 - It is based on [phusion/baseimage:latest](http://phusion.github.io/baseimage-docker/)
   instead of ubuntu:trusty.
+- It works flawlessy regardless of using boot2docker standalone or with Vagrant. You will need to set three enrironment varibles, though.
 - It fixes OS X related [write permission errors for MySQL](https://github.com/boot2docker/boot2docker/issues/581)
 - It lets you mount OS X folders *with write support* as volumes for
   - The database
 - If `CREATE_MYSQL_BASIC_USER_AND_DB="true"`, it creates a default database and user with permissions to that database
 - It is documented for less advanced users (like me)
 
-
 ##Usage
+
+    If using Vagrant, please see the extra steps in the next subsection.
 
 If you need to create a custom image `youruser/mysql`, 
 execute the following command from the `osx-docker-mysql` source folder:
 
-	docker build -t youruser/mysql .
+    docker build -t youruser/mysql .
 
 If you wish, you can push your new image to the registry:
 
-	docker push youruser/mysql
+    docker push youruser/mysql
 
 Otherwise, you are free to use dgraziotin/mysql as it is provided. Remember first
 to pull it from the Docker Hub:
 
     docker pull dgraziotin/mysql
 
+###Vagrant
 
-###Running your LAMP docker image
+If, for any reason, you would rather use Vagrant (I suggest using [AntonioMeireles/boot2docker-vagrant-box](https://github.com/AntonioMeireles/boot2docker-vagrant-box)), you need to add the following three variables when running your box:
+
+-`VAGRANT_OSX_MODE="true"` for enabling Vagrant-compatibility
+-`DOCKER_USER_ID=$(id -u)` for letting Vagrant use your host user ID for mounted folders
+-`DOCKER_USER_GID=$(id -g)` for letting Vagrant use your host user GID for mounted folders
+
+See the Environment variables section for more options.
+
+###Running your MySQL docker image
 
 If you start the image without supplying your code, e.g.,
 
-	docker run -t -i -p 3306:3306 --name db dgraziotin/mysql
+    docker run -t -i -p 3306:3306 --name db dgraziotin/mysql
 
 At [boot2docker ip] you should be able to connect to MySQL.
 
@@ -53,7 +62,7 @@ At [boot2docker ip] you should be able to connect to MySQL.
 If you wish to mount a MySQL folder locally, so that MySQL files are saved on your
 OS X machine, run the following instead:
 
-	docker run -i -t -p "3306:3306" -v ${PWD}/mysql:/mysql --name db dgraziotin/mysql
+    docker run -i -t -p "3306:3306" -v ${PWD}/mysql:/mysql --name db dgraziotin/mysql
 
 The MySQL database will thus become persistent at each subsequent run of your image.
 
@@ -83,18 +92,18 @@ with all root privileges  will be created in MySQL with a random password.
 
 To get the password, check the logs of the container by running:
 
-	docker logs [name or id, e.g., mywebsite]
+    docker logs [name or id, e.g., mywebsite]
 
 You will see an output like the following:
 
-	========================================================================
-	You can now connect to this MySQL Server using:
+    ========================================================================
+    You can now connect to this MySQL Server using:
 
-	    mysql -uadmin -p47nnf4FweaKu -h<host> -P<port>
+        mysql -uadmin -p47nnf4FweaKu -h<host> -P<port>
 
-	Please remember to change the above password as soon as possible!
-	MySQL user 'root' has no password but only allows local connections
-	========================================================================
+    Please remember to change the above password as soon as possible!
+    MySQL user 'root' has no password but only allows local connections
+    ========================================================================
 
 In this case, `47nnf4FweaKu` is the password allocated to the `admin` user.
 
@@ -111,17 +120,18 @@ the the `MYSQL_USER_*` variables, explained below.
 
 ##Environment variables
 
-- MYSQL_ADMIN_PASS="mypass" will use your given MySQL password for the `admin`
+- `MYSQL_ADMIN_PASS="mypass"` will use your given MySQL password for the `admin`
 user instead of the random one.
-- CREATE_MYSQL_BASIC_USER_AND_DB="true" will create the user `user` with db `db` and password `password`. Not needed if using one of the following three MYSQL_USER_* variables
-- MYSQL_USER_NAME="daniel" will use your given MySQL username instead of `user`
-- MYSQL_USER_DB="supercooldb" will use your given database name instead of `db`
-- MYSQL_USER_PASS="supersecretpassword" will use your given password  instead of `password`
-- PHP_UPLOAD_MAX_FILESIZE="10M" will change PHP upload_max_filesize config value
-- PHP_POST_MAX_SIZE="10M" will change PHP post_max_size config value
+- `CREATE_MYSQL_BASIC_USER_AND_DB="true"` will create the user `user` with db `db` and password `password`. Not needed if using one of the following three `MYSQL_USER_*` variables
+- `MYSQL_USER_NAME="daniel"` will use your given MySQL username instead of `user`
+- `MYSQL_USER_DB="supercooldb"` will use your given database name instead of `db`
+- `MYSQL_USER_PASS="supersecretpassword"` will use your given password  instead of `password`
+-`VAGRANT_OSX_MODE="true"` for enabling Vagrant-compatibility
+-`DOCKER_USER_ID=$(id -u)` for letting Vagrant use your host user ID for mounted folders
+-`DOCKER_USER_GID=$(id -g)` for letting Vagrant use your host user GID for mounted folders
 
 Set these variables using the `-e` flag when invoking the `docker` client.
 
-	docker run -i -t -p "3306:3306" -e MYSQL_ADMIN_PASS="mypass" --name yourwebapp dgraziotin/mysql
+    docker run -i -t -p "3306:3306" -e MYSQL_ADMIN_PASS="mypass" --name yourdb dgraziotin/mysql
 
 Please note that the MySQL variables will not work if an existing MySQL volume is supplied.
