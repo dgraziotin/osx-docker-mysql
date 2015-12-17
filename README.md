@@ -14,7 +14,7 @@ Some info about osx-docker-mysql:
 
 - It is based on [phusion/baseimage:latest](http://phusion.github.io/baseimage-docker/)
   instead of ubuntu:trusty.
-- It works flawlessy regardless of using boot2docker standalone or with Vagrant. You will need to set three enrironment varibles, though.
+- It works flawlessy regardless of using boot2docker standalone or with Vagrant. You will need to set three environment variables, though.
 - It fixes OS X related [write permission errors for MySQL](https://github.com/boot2docker/boot2docker/issues/581)
 - It lets you mount OS X folders *with write support* as volumes for
   - The database
