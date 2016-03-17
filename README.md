@@ -62,7 +62,7 @@ At [boot2docker ip] you should be able to connect to MySQL.
 If you wish to mount a MySQL folder locally, so that MySQL files are saved on your
 OS X machine, run the following instead:
 
-    docker run -i -t -p "3306:3306" -v ${PWD}/mysql:/mysql --name db dgraziotin/mysql
+    docker run -i -t -p "3306:3306" -v ${PWD}/mysql:/var/lib/mysql --name db dgraziotin/mysql
 
 The MySQL database will thus become persistent at each subsequent run of your image.
 
