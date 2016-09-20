@@ -1,5 +1,8 @@
 #osx-docker-mysql, a.k.a dgraziotin/mysql
-As of [Docker for Mac v1.12.0](https://docs.docker.com/engine/installation/mac/), there is no need for using my Docker images anymore. Thanks for the support!
+
+[![](https://images.microbadger.com/badges/image/dgraziotin/mysql.svg)](https://microbadger.com/images/dgraziotin/mysql "Get your own image badge on microbadger.com")
+
+As of [Docker for Mac v1.12.0](https://docs.docker.com/engine/installation/mac/), there is no need for using my Docker images anymore (although some users still report that my image is the only one working for them). Thanks for the support!
 
     Out-of-the-box MySQL Docker image that *just works* on Mac OS X.
     Including write support for mounted volumes (MySQL).
