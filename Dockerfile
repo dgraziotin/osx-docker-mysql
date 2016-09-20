@@ -21,6 +21,7 @@ RUN groupmod -g ${BOOT2DOCKER_GID} staff
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
+  apt-get -y install apt-utils && \
   apt-get -y install supervisor wget git mysql-server pwgen zip unzip
 
 # Add image configuration and scripts
