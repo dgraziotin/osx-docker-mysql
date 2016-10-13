@@ -2,7 +2,7 @@
 
 [![](https://images.microbadger.com/badges/image/dgraziotin/mysql.svg)](https://microbadger.com/images/dgraziotin/mysql "Get your own image badge on microbadger.com")
 
-As of [Docker for Mac v1.12.0](https://docs.docker.com/engine/installation/mac/), there is no need for using my Docker images anymore (although some users still report that my image is the only one working for them). Thanks for the support!
+As of [Docker for Mac v1.12.0](https://docs.docker.com/engine/installation/mac/), there is no _need_ for using my Docker images anymore (although some users still report that my image is the only one working for them). Thanks for the support! You can still use my images if you like. I will be using them and supporting them.
 
     Out-of-the-box MySQL Docker image that *just works* on Mac OS X.
     Including write support for mounted volumes (MySQL).
@@ -44,6 +44,8 @@ to pull it from the Docker Hub:
     docker pull dgraziotin/mysql
 
 ###Vagrant
+
+**Warning: I will remove Vagrant support in a coming release**
 
 If, for any reason, you would rather use Vagrant (I suggest using [AntonioMeireles/boot2docker-vagrant-box](https://github.com/AntonioMeireles/boot2docker-vagrant-box)), you need to add the following three variables when running your box:
 
