@@ -1,4 +1,4 @@
-#osx-docker-mysql, a.k.a dgraziotin/mysql
+# osx-docker-mysql, a.k.a dgraziotin/mysql
 
 [![](https://images.microbadger.com/badges/image/dgraziotin/mysql.svg)](https://microbadger.com/images/dgraziotin/mysql "Get your own image badge on microbadger.com")
 
@@ -25,7 +25,7 @@ Some info about osx-docker-mysql:
 - If `CREATE_MYSQL_BASIC_USER_AND_DB="true"`, it creates a default database and user with permissions to that database
 - It is documented for less advanced users (like me)
 
-##Usage
+## Usage
 
     If using Vagrant, please see the extra steps in the next subsection.
 
@@ -43,7 +43,7 @@ to pull it from the Docker Hub:
 
     docker pull dgraziotin/mysql
 
-###Vagrant
+### Vagrant
 
 **Warning: I will remove Vagrant support in a coming release**
 
@@ -55,7 +55,7 @@ If, for any reason, you would rather use Vagrant (I suggest using [AntonioMeirel
 
 See the Environment variables section for more options.
 
-###Running your MySQL docker image
+### Running your MySQL docker image
 
 If you start the image without supplying your code, e.g.,
 
@@ -63,7 +63,7 @@ If you start the image without supplying your code, e.g.,
 
 At [boot2docker ip] you should be able to connect to MySQL.
 
-###Loading your custom MySQL files
+### Loading your custom MySQL files
 
 If you wish to mount a MySQL folder locally, so that MySQL files are saved on your
 OS X machine, run the following instead:
@@ -72,19 +72,19 @@ OS X machine, run the following instead:
 
 The MySQL database will thus become persistent at each subsequent run of your image.
 
-##Environment description
+## Environment description
 
-###The /mysql folder
+### The /mysql folder
 
 MySQL is configured to serve the files from the `/mysql` folder, which is a symbolic
 link to `/var/lib/mysql`. In osx-docker-mysql, the MySQL user `mysql` 
 has full write permissions to the `mysql` folder.
 
-###MySQL
+### MySQL
 
 MySQL runs as user `mysql` and group `staff`.
 
-####The three MySQL users
+#### The three MySQL users
 
 The bundled MySQL server has two users, that are `root` and `admin`, and an optional
 third user `user`.
@@ -124,7 +124,7 @@ the MySQL server from any host (`%`).
 The user name, password, and database name can be changed using
 the the `MYSQL_USER_*` variables, explained below.
 
-##Environment variables
+## Environment variables
 
 - `MYSQL_ADMIN_PASS="mypass"` will use your given MySQL password for the `admin`
 user instead of the random one.
