@@ -19,6 +19,10 @@ chown -R mysql:staff /var/lib/mysql
 sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
 sed -i "s/user.*/user = mysql/" /etc/mysql/mysql.conf.d/mysqld.cnf
 
+mkdir -p /var/run/mysqld
+chown -R mysql:staff /var/run/mysqld
+chmod -R 770 /var/run/mysqld
+
 if [[ ! -d $VOLUME_HOME/mysql ]]; then
     echo "=> An empty or uninitialized MySQL volume is detected in $VOLUME_HOME"
     echo "=> Installing MySQL ..."
@@ -28,8 +32,5 @@ if [[ ! -d $VOLUME_HOME/mysql ]]; then
 else
     echo "=> Using an existing volume of MySQL"
 fi
-
-chown -R mysql:staff /var/run/mysqld
-chmod -R 770 /var/run/mysqld
 
 exec supervisord -n
